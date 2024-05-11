@@ -41,9 +41,26 @@ def update_news():
         root.update()
         time.sleep(20)  # delay before showing the next article
 
+# Methods for handling fullscreen
+def toggle_fullscreen(event=None):
+    root.attributes('-fullscreen', not root.attributes('-fullscreen'))
+    return "break"
+    
+def end_fullscreen(event=None):
+    root.attributes('-fullscreen', False)
+    return "break"
+    
+
 # Set up the tkinter GUI
 root = tk.Tk()
 root.title("OSINT")
+
+# Setup the keybindings
+root.bind('<F11>', toggle_fullscreen)
+root.bind('<Escape>', end_fullscreen)
+
+# Start in full screen
+root.attributes('-fullscreen', True)
 
 # Center and appropriately size the window
 screen_width = root.winfo_screenwidth()
