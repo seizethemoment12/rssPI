@@ -33,7 +33,14 @@ def update_news():
 # Set up the tkinter GUI
 root = tk.Tk()
 root.title("OSINT")
-root.geometry('800x600')
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+center_x = int(screen_width/2 - root.winfo_reqwidth()/2)
+center_y = int(screen_height/2 - root.winfo_reqheight()/2)
+root.geometry(f'+{center_x}+{center_y}')
+#root.geometry('800x600')
 
 label_image = tk.Label(root, width=600, height=400)
 label_image.pack()
