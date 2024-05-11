@@ -7,7 +7,8 @@ import threading
 import time
 
 # URL of the RSS feed
-RSS_FEED_URL = 'https://darkreading.com/rss.xml'
+#RSS_FEED_URL = 'https://darkreading.com/rss.xml'
+RSS_FEED_URL = 'https://www.bleepingcomputer.com/feed/'
 
 # Fetch and parse the RSS feed
 def fetch_rss():
