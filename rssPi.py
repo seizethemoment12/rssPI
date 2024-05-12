@@ -92,10 +92,10 @@ root.grid_rowconfigure(2, weight=1)# Summary
 label_image = tk.Label(root)
 label_image.grid(row=0, column=0, sticky='nsew')
 
-label_title = tk.Label(root, font=('Arial', 20), wraplength=500)
+label_title = tk.Label(root, font=('Arial', 40), wraplength=500)
 label_title.grid(row=1, column=0, sticky='nsew')
 
-label_summary = tk.Label(root, font=('Arial', 14), wraplength=500)
+label_summary = tk.Label(root, font=('Arial', 20), wraplength=500)
 label_summary.grid(row=2, column=0, sticky='nsew')
 
 # Start the update thread
