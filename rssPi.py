@@ -25,22 +25,32 @@ def resize_image(img_data, target_width, target_height):
 
 # Update the news article display every 20 seconds
 def update_news():
-    for entry in fetch_rss():
-        if 'media_content' in entry:
-            image_url = entry.media_content[0]['url']
-            response = requests.get(image_url)
-            img_data = Image.open(BytesIO(response.content))
-            resized_img_data = resize_image(img_data, label_image.winfo_width(), label_image.winfo_height())
-            # Resize the image to fit
-            
-            img = ImageTk.PhotoImage(resized_img_data)
-            label_image.config(image=img)
-            label_image.image = img  # keep a reference!
+    while True:  # Outer loop to fetch the RSS feed every hour
+        entries = fetch_rss()  # Fetch the latest entries
+        start_time = time.time()  # Record the start time
+        
+        # Inner loop to cycle through the articles
+        while time.time() - start_time < 3600:  # Continue cycling for one hour
+            for entry in entries:
+                if 'media_content' in entry:
+                    image_url = entry.media_content[0]['url']
+                    response = requests.get(image_url)
+                    img_data = Image.open(BytesIO(response.content))
+                    resized_img_data = resize_image(img_data, label_image.winfo_width(), label_image.winfo_height())
+                    img = ImageTk.PhotoImage(resized_img_data)
 
-        label_title.config(text=entry.title)
-        label_summary.config(text=entry.summary)
-        root.update()
-        time.sleep(20)  # delay before showing the next article
+                    label_image.config(image=img)
+                    label_image.image = img  # Keep a reference to avoid garbage collection
+
+                label_title.config(text=entry.title)
+                label_summary.config(text=entry.summary)
+                root.update_idletasks()  # Update the GUI
+                
+                time.sleep(20)  # Wait for 20 seconds before showing the next article
+
+                # Check if an hour has passed
+                if time.time() - start_time >= 3600:
+                    break
 
 # Methods for handling fullscreen
 def toggle_fullscreen(event=None):
@@ -74,9 +84,9 @@ root.geometry(f'{window_width}x{window_height}+{x_offset}+{y_offset}')
 
 #Use a grid to make the labels scale
 root.grid_columnconfigure(0, weight=1)
-root.grid_rowconfigure(0, weight=3)
-root.grid_rowconfigure(1, weight=1)
-root.grid_rowconfigure(2, weight=1)
+root.grid_rowconfigure(0, weight=1) # Image
+root.grid_rowconfigure(1, weight=3) # Title
+root.grid_rowconfigure(2, weight=1)# Summary
 
 
 label_image = tk.Label(root)
